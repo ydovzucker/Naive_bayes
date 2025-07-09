@@ -1,3 +1,4 @@
+from sklearn.model_selection import train_test_split
 class ModelChecker:
     def __init__(self, prior, conditional_prob, target_column):
         self.prior = prior
@@ -28,3 +29,31 @@ class ModelChecker:
 
         # Return the class with the highest score
         return max(class_scores, key=class_scores.get)
+
+    def evaluate_accuracy(self, data):
+        # Step 1: Split the data
+        train_data, test_data = train_test_split(data, test_size=0.3, random_state=42)
+
+        # Step 2: Train a new model on the 70% training data
+        from trainer import Trainer  # (assuming this is the name of your Trainer class)
+        trainer = Trainer(train_data, self.target_column)
+        prior, conditional_prob = trainer.train()
+
+        # Step 3: Create a temporary ModelChecker with the new training
+        temp_checker = ModelChecker(prior, conditional_prob, self.target_column)
+
+        # Step 4: Loop through test rows and make predictions
+        correct = 0
+        total = len(test_data)
+
+        for _, row in test_data.iterrows():
+            sample = row.drop(labels=[self.target_column]).to_dict()
+            actual = row[self.target_column]
+            prediction = temp_checker.predict(sample)
+
+            if prediction == actual:
+                correct += 1
+
+        # Step 5: Return accuracy as a percentage
+        accuracy = correct / total
+        return accuracy
