@@ -1,5 +1,6 @@
 from sklearn.model_selection import train_test_split
 from typing import Dict
+from trainer import Trainer
 
 class ModelChecker:
     def __init__(self, prior: Dict, conditional_prob: Dict, target_column: str):
