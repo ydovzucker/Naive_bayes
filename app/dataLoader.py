@@ -1,0 +1,31 @@
+import os
+import pandas as pd
+
+class DataLoader:
+    def __init__(self):
+        self.data = self._load_data()
+
+    def _load_data(self) -> pd.DataFrame:
+        dir_path = os.path.dirname(__file__)
+        path = os.path.join(dir_path, "buy_computer_data.csv")
+
+        try:
+            return pd.read_csv(path)
+        except FileNotFoundError:
+            raise RuntimeError(f"Data file not found at: {path}")
+        except pd.errors.ParserError:
+            raise RuntimeError(f"Failed to parse CSV at: {path}")
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error while loading data: {e}")
+
+    def get_data(self) -> pd.DataFrame:
+        return self.data
+
+
+
+
+
+
+
+
+

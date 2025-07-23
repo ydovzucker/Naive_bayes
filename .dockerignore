@@ -1,0 +1,22 @@
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore environment files and folders
+.env
+.venv/
+env/
+venv/
+
+# Ignore system files
+.DS_Store
+
+# Ignore build artifacts
+*.egg-info/
+dist/
+build/
+
+# Ignore Streamlit and Terminal Client (not needed inside container)
+main_console.py
+streamlit_app.py
